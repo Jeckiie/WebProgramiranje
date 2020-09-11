@@ -114,7 +114,15 @@ export default {
     },
     methods: {
         onSignup () {
-            this.$store.dispatch('signUserUp', {email: this.email, username: this.username, password: this.password})
+            if(this.username != ''){
+                if ((this.password != this.confirmPassword)) {
+                    alert("Passwords do not match!")
+                } else {
+                    this.$store.dispatch('signUserUp', {email: this.email, username: this.username, password: this.password})
+                }
+            } else {
+                alert("Username is empty!")
+            }
         },
         onDismissed () {
             this.$store.dispatch('clearError')

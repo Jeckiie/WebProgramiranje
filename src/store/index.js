@@ -595,6 +595,34 @@ export default new Vuex.Store({
           }
         )
         await promiseSaveProfile
+        commit('setLoading', true)
+        let promiseGetPosts = firebase.database().ref('posts').once('value')
+        .then(
+          (data) => {
+            const posts = []
+            const obj = data.val()
+            for (let key in obj) {
+              posts.push({
+                id: key,
+                imageUrl: obj[key].imageUrl,
+                description: obj[key].description,
+                date: obj[key].date,
+                time: obj[key].time,
+                creatorId: obj[key].creatorId,
+                author: obj[key].author,
+                profileImgUrl: obj[key].profileImgUrl,
+                likes: obj[key].likes,
+              })
+            }
+            commit('setLoadedPosts', posts)
+            commit('setLoading', false)
+          })
+        .catch(
+          (error) => {
+            console.log(error)
+            commit('setLoading', false)
+          })
+        await promiseGetPosts;
       }
       postSignUp(signupData)
     },
@@ -652,6 +680,34 @@ export default new Vuex.Store({
           commit('setLoading', false)
       })
       await promiseGetProfileData
+      commit('setLoading', true)
+      let promiseGetPosts = firebase.database().ref('posts').once('value')
+      .then(
+        (data) => {
+          const posts = []
+          const obj = data.val()
+          for (let key in obj) {
+            posts.push({
+              id: key,
+              imageUrl: obj[key].imageUrl,
+              description: obj[key].description,
+              date: obj[key].date,
+              time: obj[key].time,
+              creatorId: obj[key].creatorId,
+              author: obj[key].author,
+              profileImgUrl: obj[key].profileImgUrl,
+              likes: obj[key].likes,
+            })
+          }
+          commit('setLoadedPosts', posts)
+          commit('setLoading', false)
+        })
+      .catch(
+        (error) => {
+          console.log(error)
+          commit('setLoading', false)
+        })
+      await promiseGetPosts;
       }
       postSignIn(signInData)
     },
