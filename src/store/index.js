@@ -195,10 +195,11 @@ export default new Vuex.Store({
         await promiseUpdateNoOfLikes
 
         let promiseUpdateLikedPosts = firebase.database().ref('profiles').child(key).update({likedPosts: newLikedPosts})
-        .then(() => {
+        .then((data) => {
           const newProfile = {
           username: getters.profile.username,
-          imageUrl: getters.profile.profileImgUrl,
+         // imageUrl: getters.profile.profileImgUrl,
+          imageUrl: data.val()[key].profileImgUrl,
           profileKey: key,
           likedPosts: newLikedPosts,
           createdPosts: getters.profile.createdPosts,
